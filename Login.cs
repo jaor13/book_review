@@ -125,5 +125,10 @@ namespace book_review
         {
 
         }
+
+        private void guna2PictureBox2_Click_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

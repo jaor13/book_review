@@ -45,3 +45,5 @@ C:\Users\Acer\source\repos\book_review\obj\Debug\book_review.csproj.SuggestedBin
 C:\Users\Acer\source\repos\book_review\obj\Debug\book_review.exe.config
 C:\Users\Acer\source\repos\book_review\obj\Debug\book_review.Dashboard.resources
 C:\Users\Acer\source\repos\book_review\obj\Debug\book_review.Login.resources
+C:\Users\Acer\source\repos\book_review\obj\Debug\book_review.dashboardCustomControl.resources
+C:\Users\Acer\source\repos\book_review\obj\Debug\book_review.usersUserControl.resources
