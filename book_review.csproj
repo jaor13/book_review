@@ -287,5 +287,14 @@
   <ItemGroup>
     <None Include="Resources\try-login-bg4.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wave-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wave-11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wave-2.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
