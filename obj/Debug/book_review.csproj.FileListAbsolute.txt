@@ -47,3 +47,4 @@ C:\Users\Acer\source\repos\book_review\obj\Debug\book_review.Dashboard.resources
 C:\Users\Acer\source\repos\book_review\obj\Debug\book_review.Login.resources
 C:\Users\Acer\source\repos\book_review\obj\Debug\book_review.dashboardCustomControl.resources
 C:\Users\Acer\source\repos\book_review\obj\Debug\book_review.usersUserControl.resources
+C:\Users\Acer\source\repos\book_review\bin\Debug\App.config

@@ -113,6 +113,16 @@ namespace book_review.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap green_bg {
+            get {
+                object obj = ResourceManager.GetObject("green-bg", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap group {
             get {
                 object obj = ResourceManager.GetObject("group", resourceCulture);
@@ -346,6 +356,66 @@ namespace book_review.Properties {
         internal static System.Drawing.Bitmap na_users1 {
             get {
                 object obj = ResourceManager.GetObject("na-users1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap reading_people {
+            get {
+                object obj = ResourceManager.GetObject("reading-people", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap try_login_bg {
+            get {
+                object obj = ResourceManager.GetObject("try-login-bg", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap try_login_bg1 {
+            get {
+                object obj = ResourceManager.GetObject("try-login-bg1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap try_login_bg2 {
+            get {
+                object obj = ResourceManager.GetObject("try-login-bg2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap try_login_bg3 {
+            get {
+                object obj = ResourceManager.GetObject("try-login-bg3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap try_login_bg4 {
+            get {
+                object obj = ResourceManager.GetObject("try-login-bg4", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

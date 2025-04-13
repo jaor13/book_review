@@ -169,7 +169,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\login-bg.png" />
@@ -263,6 +265,27 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\a-reviews1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\green-bg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\reading-people.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\try-login-bg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\try-login-bg1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\try-login-bg2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\try-login-bg3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\try-login-bg4.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

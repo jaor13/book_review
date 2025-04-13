@@ -37,13 +37,14 @@
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             this.guna2ControlBox2 = new Guna.UI2.WinForms.Guna2ControlBox();
             this.guna2ControlBox1 = new Guna.UI2.WinForms.Guna2ControlBox();
-            this.dashboardCustomControl1 = new book_review.dashboardCustomControl();
-            this.usersUserControl1 = new book_review.usersUserControl();
             this.guna2Button5 = new Guna.UI2.WinForms.Guna2Button();
             this.guna2Button4 = new Guna.UI2.WinForms.Guna2Button();
             this.guna2Button3 = new Guna.UI2.WinForms.Guna2Button();
             this.guna2Button2 = new Guna.UI2.WinForms.Guna2Button();
             this.guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
+            this.usersUserControl2 = new book_review.usersUserControl();
+            this.dashboardCustomControl1 = new book_review.dashboardCustomControl();
+            this.usersUserControl1 = new book_review.usersUserControl();
             this.guna2Panel2.SuspendLayout();
             this.guna2Panel1.SuspendLayout();
             this.SuspendLayout();
@@ -73,7 +74,7 @@
             this.guna2Panel2.Dock = System.Windows.Forms.DockStyle.Left;
             this.guna2Panel2.Location = new System.Drawing.Point(0, 0);
             this.guna2Panel2.Name = "guna2Panel2";
-            this.guna2Panel2.Size = new System.Drawing.Size(203, 850);
+            this.guna2Panel2.Size = new System.Drawing.Size(203, 896);
             this.guna2Panel2.TabIndex = 13;
             // 
             // sidePanel
@@ -93,7 +94,7 @@
             this.guna2Panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.guna2Panel1.Location = new System.Drawing.Point(203, 0);
             this.guna2Panel1.Name = "guna2Panel1";
-            this.guna2Panel1.Size = new System.Drawing.Size(1214, 42);
+            this.guna2Panel1.Size = new System.Drawing.Size(1344, 42);
             this.guna2Panel1.TabIndex = 14;
             // 
             // guna2ControlBox2
@@ -102,7 +103,7 @@
             this.guna2ControlBox2.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
             this.guna2ControlBox2.FillColor = System.Drawing.Color.White;
             this.guna2ControlBox2.IconColor = System.Drawing.Color.DimGray;
-            this.guna2ControlBox2.Location = new System.Drawing.Point(1147, 12);
+            this.guna2ControlBox2.Location = new System.Drawing.Point(1277, 12);
             this.guna2ControlBox2.Name = "guna2ControlBox2";
             this.guna2ControlBox2.Size = new System.Drawing.Size(19, 22);
             this.guna2ControlBox2.TabIndex = 1;
@@ -112,24 +113,10 @@
             this.guna2ControlBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.guna2ControlBox1.FillColor = System.Drawing.Color.White;
             this.guna2ControlBox1.IconColor = System.Drawing.Color.DimGray;
-            this.guna2ControlBox1.Location = new System.Drawing.Point(1183, 12);
+            this.guna2ControlBox1.Location = new System.Drawing.Point(1313, 12);
             this.guna2ControlBox1.Name = "guna2ControlBox1";
             this.guna2ControlBox1.Size = new System.Drawing.Size(19, 22);
             this.guna2ControlBox1.TabIndex = 0;
-            // 
-            // dashboardCustomControl1
-            // 
-            this.dashboardCustomControl1.Location = new System.Drawing.Point(221, 48);
-            this.dashboardCustomControl1.Name = "dashboardCustomControl1";
-            this.dashboardCustomControl1.Size = new System.Drawing.Size(1171, 693);
-            this.dashboardCustomControl1.TabIndex = 15;
-            // 
-            // usersUserControl1
-            // 
-            this.usersUserControl1.Location = new System.Drawing.Point(221, 48);
-            this.usersUserControl1.Name = "usersUserControl1";
-            this.usersUserControl1.Size = new System.Drawing.Size(1171, 727);
-            this.usersUserControl1.TabIndex = 16;
             // 
             // guna2Button5
             // 
@@ -229,13 +216,34 @@
             this.guna2Button1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.guna2Button1.Click += new System.EventHandler(this.guna2Button1_Click_2);
             // 
+            // usersUserControl2
+            // 
+            this.usersUserControl2.Location = new System.Drawing.Point(210, 49);
+            this.usersUserControl2.Name = "usersUserControl2";
+            this.usersUserControl2.Size = new System.Drawing.Size(1182, 789);
+            this.usersUserControl2.TabIndex = 16;
+            // 
+            // dashboardCustomControl1
+            // 
+            this.dashboardCustomControl1.Location = new System.Drawing.Point(221, 48);
+            this.dashboardCustomControl1.Name = "dashboardCustomControl1";
+            this.dashboardCustomControl1.Size = new System.Drawing.Size(1171, 693);
+            this.dashboardCustomControl1.TabIndex = 15;
+            // 
+            // usersUserControl1
+            // 
+            this.usersUserControl1.Location = new System.Drawing.Point(221, 48);
+            this.usersUserControl1.Name = "usersUserControl1";
+            this.usersUserControl1.Size = new System.Drawing.Size(1171, 727);
+            this.usersUserControl1.TabIndex = 16;
+            // 
             // Dashboard
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.GhostWhite;
-            this.ClientSize = new System.Drawing.Size(1417, 850);
-            this.Controls.Add(this.usersUserControl1);
+            this.ClientSize = new System.Drawing.Size(1547, 896);
+            this.Controls.Add(this.usersUserControl2);
             this.Controls.Add(this.dashboardCustomControl1);
             this.Controls.Add(this.guna2Panel1);
             this.Controls.Add(this.guna2Panel2);
@@ -267,5 +275,6 @@
         private Guna.UI2.WinForms.Guna2Panel sidePanel;
         private usersUserControl usersUserControl1;
         private dashboardCustomControl dashboardCustomControl1;
+        private usersUserControl usersUserControl2;
     }
 }

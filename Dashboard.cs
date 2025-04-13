@@ -23,6 +23,8 @@ namespace book_review
             sidePanel.Height = guna2Button1.Height;
             sidePanel.Top = guna2Button1.Top;
             dashboardCustomControl1.BringToFront();
+            dashboardCustomControl1.Visible = true;
+            usersUserControl1.Visible = false;
 
             defaultImage1 = guna2Button1.Image;
             activeImage1 = Properties.Resources.a_dashboard;
@@ -112,6 +114,8 @@ namespace book_review
             sidePanel.Height = guna2Button1.Height;
             sidePanel.Top = guna2Button1.Top;
             dashboardCustomControl1.BringToFront();
+            dashboardCustomControl1.Visible = true;
+            usersUserControl1.Visible = false;
         }
 
         private void guna2Button2_Click(object sender, EventArgs e)
@@ -120,6 +124,8 @@ namespace book_review
             sidePanel.Height = guna2Button2.Height;
             sidePanel.Top = guna2Button2.Top;
             usersUserControl1.BringToFront();
+            usersUserControl1.Visible = true;
+            dashboardCustomControl1.Visible = false;
         }
 
         private void SetActiveButton(Guna2Button activeButton)
