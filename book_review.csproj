@@ -296,5 +296,17 @@
   <ItemGroup>
     <None Include="Resources\wave-2.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\num-user-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\num-book-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\num-review-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\num-author-icon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

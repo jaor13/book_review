@@ -87,5 +87,10 @@ namespace book_review
         {
 
         }
+
+        private void guna2DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

@@ -92,7 +92,7 @@
             this.label1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.label1.Location = new System.Drawing.Point(1050, 169);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(280, 50);
+            this.label1.Size = new System.Drawing.Size(273, 49);
             this.label1.TabIndex = 5;
             this.label1.Text = "Welcome back !";
             this.label1.Click += new System.EventHandler(this.label1_Click);
