@@ -130,5 +130,19 @@ namespace book_review
         {
 
         }
+
+        private void guna2CheckBox2_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void guna2Button2_Click(object sender, EventArgs e)
+        {
+            // Create an instance of the ForgotPass form
+            ForgotPass forgotPassForm = new ForgotPass();
+
+            // Show the ForgotPass form as a modal dialog
+            forgotPassForm.ShowDialog();
+        }
     }
 }
