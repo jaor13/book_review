@@ -92,7 +92,7 @@ namespace book_review
                         // Reset and show an error message using Guna2MessageDialog
                         guna2MessageDialog1.Text = "Invalid email or password";
                         guna2MessageDialog1.Caption = "Login Failed";
-                        guna2MessageDialog1.Buttons = MessageDialogButtons.OK;
+                        //guna2MessageDialog1.Buttons = MessageDialogButtons.OK;
                         guna2MessageDialog1.Icon = MessageDialogIcon.Error;
                         guna2MessageDialog1.Show();
                     }

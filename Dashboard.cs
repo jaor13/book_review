@@ -80,6 +80,16 @@ namespace book_review
             //reviewsUserControl1.BringToFront();
         }
 
+        private void pieChart1_ChildChanged(object sender, System.Windows.Forms.Integration.ChildChangedEventArgs e)
+        {
+
+        }
+
+        private void dashboardCustomControl1_Load(object sender, EventArgs e)
+        {
+
+        }
+
         private void guna2GradientButton1_Click(object sender, EventArgs e)
         {
 
