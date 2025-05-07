@@ -11,19 +11,22 @@ using MySql.Data.MySqlClient;
 using Guna.UI2.WinForms;
 using Guna.Charts.WinForms;
 using System.Windows.Forms.DataVisualization.Charting;
+using book_review.Helpers; 
+
 
 
 namespace book_review
 {
-
     public partial class dashboardCustomControl : UserControl
     {
-       
+
         public dashboardCustomControl()
         {
             InitializeComponent();
             this.gunaLineDataset1 = new Guna.Charts.WinForms.GunaLineDataset();
             this.gunaDoughnutDataset1 = new Guna.Charts.WinForms.GunaDoughnutDataset();
+
+
 
             if (!DesignMode)
             {
@@ -33,6 +36,45 @@ namespace book_review
 
 
         }
+        public void UpdateUserCountLabel()
+        {
+            // Update the label with the shared user count
+            label4.Text = SharedData.UserCount.ToString();
+        }
+
+
+
+        public void RefreshUserCount()
+        {
+            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string query = "SELECT COUNT(*) FROM users WHERE role = 'user'";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    int userCount = Convert.ToInt32(cmd.ExecuteScalar());
+
+                    // Update label4 on the UI thread
+                    if (label4.InvokeRequired)
+                    {
+                        label4.Invoke(new Action(() => label4.Text = userCount.ToString()));
+
+                    }
+                    else
+                    {
+                        label4.Text = userCount.ToString();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("An error occurred while fetching user count: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+    
 
         private void UserControl1_Load(object sender, EventArgs e)
         {
@@ -96,8 +138,10 @@ namespace book_review
             }
         }
 
-        private void UpdateUserCount()
+        private void UpdateUserCount() // This is your existing method
         {
+            if (IsInDesignMode()) return; // Good to have this check here too
+
             string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
@@ -107,12 +151,30 @@ namespace book_review
                     conn.Open();
                     string query = "SELECT COUNT(*) FROM users WHERE role = 'user'";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
-                    int userCount = Convert.ToInt32(cmd.ExecuteScalar());
-                    label4.Text = userCount.ToString();
+                    object result = cmd.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                    {
+                        int userCount = Convert.ToInt32(result);
+                        // Ensure label4 is accessible and on the correct thread
+                        if (label4 != null) // Check if label4 itself is not null
+                        {
+                            if (label4.InvokeRequired)
+                            {
+                                label4.Invoke(new Action(() => label4.Text = userCount.ToString()));
+                            }
+                            else
+                            {
+                                label4.Text = userCount.ToString();
+                            }
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("An error occurred while fetching user count: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (!IsInDesignMode()) // Avoid MessageBox in DesignMode
+                    {
+                        MessageBox.Show("An error occurred while fetching user count: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
         }
@@ -377,6 +439,11 @@ namespace book_review
 
 
         private void guna2DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
         {
 
         }

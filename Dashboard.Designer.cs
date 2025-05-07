@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dashboardCustomControl1 = new book_review.dashboardCustomControl();
             this.components = new System.ComponentModel.Container();
             this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.guna2AnimateWindow1 = new Guna.UI2.WinForms.Guna2AnimateWindow(this.components);
@@ -43,6 +42,7 @@
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             this.guna2ControlBox2 = new Guna.UI2.WinForms.Guna2ControlBox();
             this.guna2ControlBox1 = new Guna.UI2.WinForms.Guna2ControlBox();
+            this.dashboardCustomControl1 = new book_review.dashboardCustomControl();
             this.usersUserControl2 = new book_review.usersUserControl();
             this.usersUserControl1 = new book_review.usersUserControl();
             this.guna2Panel2.SuspendLayout();
@@ -76,6 +76,7 @@
             this.guna2Panel2.Name = "guna2Panel2";
             this.guna2Panel2.Size = new System.Drawing.Size(203, 896);
             this.guna2Panel2.TabIndex = 13;
+            this.guna2Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.guna2Panel2_Paint);
             // 
             // sidePanel
             // 
@@ -228,9 +229,9 @@
             // 
             // usersUserControl2
             // 
-            this.usersUserControl2.Location = new System.Drawing.Point(210, 49);
+            this.usersUserControl2.Location = new System.Drawing.Point(214, 48);
             this.usersUserControl2.Name = "usersUserControl2";
-            this.usersUserControl2.Size = new System.Drawing.Size(1182, 789);
+            this.usersUserControl2.Size = new System.Drawing.Size(1321, 836);
             this.usersUserControl2.TabIndex = 16;
             // 
             // usersUserControl1
@@ -246,9 +247,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1547, 896);
-            this.Controls.Add(this.dashboardCustomControl1);
             this.Controls.Add(this.guna2Panel1);
             this.Controls.Add(this.guna2Panel2);
+            this.Controls.Add(this.dashboardCustomControl1);
             this.Controls.Add(this.usersUserControl2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Dashboard";

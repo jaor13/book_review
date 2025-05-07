@@ -17,9 +17,16 @@ namespace book_review
         private Color activeForeColor = Color.White;
         private Image defaultImage1, activeImage1, defaultImage2, activeImage2, defaultImage3, activeImage3, defaultImage4, activeImage4, defaultImage5, activeImage5;
 
+       
+
+
         public Dashboard()
         {
+
             InitializeComponent();
+
+
+
             sidePanel.Height = guna2Button1.Height;
             sidePanel.Top = guna2Button1.Top;
             dashboardCustomControl1.BringToFront();
@@ -47,6 +54,11 @@ namespace book_review
             guna2Button4.Image = defaultImage4;
             guna2Button5.ForeColor = defaultForeColor;
             guna2Button5.Image = defaultImage5;
+
+        }
+        public dashboardCustomControl DashboardControl
+        {
+            get { return dashboardCustomControl1; }
         }
 
         private void Form2_Load(object sender, EventArgs e)
@@ -86,6 +98,11 @@ namespace book_review
         }
 
         private void dashboardCustomControl1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void guna2Panel2_Paint(object sender, PaintEventArgs e)
         {
 
         }
