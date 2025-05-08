@@ -73,6 +73,16 @@ namespace book_review.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap a_books {
+            get {
+                object obj = ResourceManager.GetObject("a-books", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap a_books_2 {
             get {
                 object obj = ResourceManager.GetObject("a-books-2", resourceCulture);
@@ -306,6 +316,16 @@ namespace book_review.Properties {
         internal static System.Drawing.Bitmap na_books {
             get {
                 object obj = ResourceManager.GetObject("na-books", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap na_books1 {
+            get {
+                object obj = ResourceManager.GetObject("na-books1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

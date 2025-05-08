@@ -38,8 +38,22 @@ namespace book_review
         }
         public void UpdateUserCountLabel()
         {
-            // Update the label with the shared user count
             label4.Text = SharedData.UserCount.ToString();
+        }
+
+        public void UpdateAuthorCountLabel()
+        {
+            label10.Text = SharedData.AuthorCount.ToString();
+        }
+
+        public void UpdateBookCountLabel()
+        {
+            label6.Text = SharedData.BookCount.ToString();
+        }
+
+        public void UpdateReviewCountLabel()
+        {
+            label8.Text = SharedData.ReviewCount.ToString();
         }
 
 
@@ -86,6 +100,10 @@ namespace book_review
 
             try
             {
+
+                SharedData.RefreshUserCount();  
+                SharedData.RefreshAuthorCount();
+
                 UpdateUserCount();
                 UpdateBookCount();
                 UpdateReviewCount();
@@ -223,26 +241,21 @@ namespace book_review
 
         private void UpdateAuthorCount()
         {
-            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
-
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            if (label10 != null) // Ensure label10 exists
             {
-                try
+                if (label10.InvokeRequired)
                 {
-                    conn.Open();
-                    string query = "SELECT COUNT(*) FROM authors";
-                    MySqlCommand cmd = new MySqlCommand(query, conn);
-                    int authorCount = Convert.ToInt32(cmd.ExecuteScalar());
-                    label10.Text = authorCount.ToString();
+                    label10.Invoke(new Action(() => label10.Text = SharedData.AuthorCount.ToString()));
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show("An error occurred while fetching author count: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    label10.Text = SharedData.AuthorCount.ToString();
                 }
             }
         }
 
-     
+
+
 
         private void gunaChart1_Load(object sender, EventArgs e)
         {
@@ -444,6 +457,21 @@ namespace book_review
         }
 
         private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label10_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label8_Click(object sender, EventArgs e)
         {
 
         }

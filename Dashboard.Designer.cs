@@ -33,6 +33,7 @@
             this.guna2AnimateWindow1 = new Guna.UI2.WinForms.Guna2AnimateWindow(this.components);
             this.guna2DragControl1 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
             this.guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
+            this.guna2Button6 = new Guna.UI2.WinForms.Guna2Button();
             this.sidePanel = new Guna.UI2.WinForms.Guna2Panel();
             this.guna2Button5 = new Guna.UI2.WinForms.Guna2Button();
             this.guna2Button4 = new Guna.UI2.WinForms.Guna2Button();
@@ -44,7 +45,12 @@
             this.guna2ControlBox1 = new Guna.UI2.WinForms.Guna2ControlBox();
             this.dashboardCustomControl1 = new book_review.dashboardCustomControl();
             this.usersUserControl2 = new book_review.usersUserControl();
+            this.booksUserControl1 = new book_review.booksUserControl();
+            this.authorsControl1 = new book_review.authorsControl();
+            this.genreUserControl1 = new book_review.genreUserControl();
             this.usersUserControl1 = new book_review.usersUserControl();
+            this.reviewsUserControl1 = new book_review.reviewsUserControl();
+            this.reviewsUserControl2 = new book_review.reviewsUserControl();
             this.guna2Panel2.SuspendLayout();
             this.guna2Panel1.SuspendLayout();
             this.SuspendLayout();
@@ -65,6 +71,7 @@
             // guna2Panel2
             // 
             this.guna2Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(13)))), ((int)(((byte)(199)))), ((int)(((byte)(156)))));
+            this.guna2Panel2.Controls.Add(this.guna2Button6);
             this.guna2Panel2.Controls.Add(this.sidePanel);
             this.guna2Panel2.Controls.Add(this.guna2Button5);
             this.guna2Panel2.Controls.Add(this.guna2Button4);
@@ -77,6 +84,26 @@
             this.guna2Panel2.Size = new System.Drawing.Size(203, 896);
             this.guna2Panel2.TabIndex = 13;
             this.guna2Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.guna2Panel2_Paint);
+            // 
+            // guna2Button6
+            // 
+            this.guna2Button6.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.guna2Button6.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.guna2Button6.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.guna2Button6.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.guna2Button6.FillColor = System.Drawing.Color.Transparent;
+            this.guna2Button6.Font = new System.Drawing.Font("Quicksand", 10.8F, System.Drawing.FontStyle.Bold);
+            this.guna2Button6.ForeColor = System.Drawing.Color.White;
+            this.guna2Button6.Image = global::book_review.Properties.Resources.na_books1;
+            this.guna2Button6.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.guna2Button6.ImageSize = new System.Drawing.Size(23, 23);
+            this.guna2Button6.Location = new System.Drawing.Point(12, 379);
+            this.guna2Button6.Name = "guna2Button6";
+            this.guna2Button6.Size = new System.Drawing.Size(203, 45);
+            this.guna2Button6.TabIndex = 20;
+            this.guna2Button6.Text = "Genres";
+            this.guna2Button6.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.guna2Button6.Click += new System.EventHandler(this.guna2Button6_Click);
             // 
             // sidePanel
             // 
@@ -99,12 +126,13 @@
             this.guna2Button5.Image = global::book_review.Properties.Resources.na_reviews;
             this.guna2Button5.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.guna2Button5.ImageSize = new System.Drawing.Size(25, 25);
-            this.guna2Button5.Location = new System.Drawing.Point(12, 382);
+            this.guna2Button5.Location = new System.Drawing.Point(12, 440);
             this.guna2Button5.Name = "guna2Button5";
             this.guna2Button5.Size = new System.Drawing.Size(203, 45);
             this.guna2Button5.TabIndex = 19;
             this.guna2Button5.Text = "Reviews";
             this.guna2Button5.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.guna2Button5.Click += new System.EventHandler(this.guna2Button5_Click_2);
             // 
             // guna2Button4
             // 
@@ -124,6 +152,7 @@
             this.guna2Button4.TabIndex = 18;
             this.guna2Button4.Text = "Authors";
             this.guna2Button4.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.guna2Button4.Click += new System.EventHandler(this.guna2Button4_Click_1);
             // 
             // guna2Button3
             // 
@@ -216,6 +245,7 @@
             this.guna2ControlBox1.Name = "guna2ControlBox1";
             this.guna2ControlBox1.Size = new System.Drawing.Size(19, 22);
             this.guna2ControlBox1.TabIndex = 0;
+            this.guna2ControlBox1.Click += new System.EventHandler(this.guna2ControlBox1_Click);
             // 
             // dashboardCustomControl1
             // 
@@ -234,12 +264,47 @@
             this.usersUserControl2.Size = new System.Drawing.Size(1321, 836);
             this.usersUserControl2.TabIndex = 16;
             // 
+            // booksUserControl1
+            // 
+            this.booksUserControl1.Location = new System.Drawing.Point(209, 49);
+            this.booksUserControl1.Name = "booksUserControl1";
+            this.booksUserControl1.Size = new System.Drawing.Size(1321, 826);
+            this.booksUserControl1.TabIndex = 17;
+            // 
+            // authorsControl1
+            // 
+            this.authorsControl1.Location = new System.Drawing.Point(214, 48);
+            this.authorsControl1.Name = "authorsControl1";
+            this.authorsControl1.Size = new System.Drawing.Size(1321, 835);
+            this.authorsControl1.TabIndex = 18;
+            // 
+            // genreUserControl1
+            // 
+            this.genreUserControl1.Location = new System.Drawing.Point(209, 49);
+            this.genreUserControl1.Name = "genreUserControl1";
+            this.genreUserControl1.Size = new System.Drawing.Size(1321, 835);
+            this.genreUserControl1.TabIndex = 19;
+            // 
             // usersUserControl1
             // 
             this.usersUserControl1.Location = new System.Drawing.Point(221, 48);
             this.usersUserControl1.Name = "usersUserControl1";
             this.usersUserControl1.Size = new System.Drawing.Size(1171, 727);
             this.usersUserControl1.TabIndex = 16;
+            // 
+            // reviewsUserControl1
+            // 
+            this.reviewsUserControl1.Location = new System.Drawing.Point(214, 48);
+            this.reviewsUserControl1.Name = "reviewsUserControl1";
+            this.reviewsUserControl1.Size = new System.Drawing.Size(1321, 835);
+            this.reviewsUserControl1.TabIndex = 20;
+            // 
+            // reviewsUserControl2
+            // 
+            this.reviewsUserControl2.Location = new System.Drawing.Point(214, 48);
+            this.reviewsUserControl2.Name = "reviewsUserControl2";
+            this.reviewsUserControl2.Size = new System.Drawing.Size(1321, 835);
+            this.reviewsUserControl2.TabIndex = 21;
             // 
             // Dashboard
             // 
@@ -251,6 +316,11 @@
             this.Controls.Add(this.guna2Panel2);
             this.Controls.Add(this.dashboardCustomControl1);
             this.Controls.Add(this.usersUserControl2);
+            this.Controls.Add(this.booksUserControl1);
+            this.Controls.Add(this.authorsControl1);
+            this.Controls.Add(this.genreUserControl1);
+            this.Controls.Add(this.reviewsUserControl1);
+            this.Controls.Add(this.reviewsUserControl2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Dashboard";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -280,5 +350,11 @@
         private usersUserControl usersUserControl1;
         private dashboardCustomControl dashboardCustomControl1;
         private usersUserControl usersUserControl2;
+        private booksUserControl booksUserControl1;
+        private authorsControl authorsControl1;
+        private Guna.UI2.WinForms.Guna2Button guna2Button6;
+        private genreUserControl genreUserControl1;
+        private reviewsUserControl reviewsUserControl1;
+        private reviewsUserControl reviewsUserControl2;
     }
 }

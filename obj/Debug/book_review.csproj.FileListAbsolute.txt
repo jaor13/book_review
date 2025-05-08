@@ -58,3 +58,7 @@ C:\Users\Acer\source\repos\book_review\bin\Debug\LiveCharts.Wpf.pdb
 C:\Users\Acer\source\repos\book_review\bin\Debug\LiveCharts.Wpf.xml
 C:\Users\Acer\source\repos\book_review\bin\Debug\Guna.Charts.WinForms.dll
 C:\Users\Acer\source\repos\book_review\bin\Debug\Guna.Charts.WinForms.xml
+C:\Users\Acer\source\repos\book_review\obj\Debug\book_review.booksUserControl.resources
+C:\Users\Acer\source\repos\book_review\obj\Debug\book_review.authorsControl.resources
+C:\Users\Acer\source\repos\book_review\obj\Debug\book_review.genreUserControl.resources
+C:\Users\Acer\source\repos\book_review\obj\Debug\book_review.reviewsUserControl.resources

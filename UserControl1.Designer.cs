@@ -196,6 +196,7 @@ namespace book_review
             this.label6.Size = new System.Drawing.Size(46, 41);
             this.label6.TabIndex = 15;
             this.label6.Text = "10";
+            this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
             // guna2Shapes3
             // 
@@ -234,6 +235,7 @@ namespace book_review
             this.label8.Size = new System.Drawing.Size(46, 41);
             this.label8.TabIndex = 19;
             this.label8.Text = "10";
+            this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
             // guna2Shapes4
             // 
@@ -272,6 +274,7 @@ namespace book_review
             this.label10.Size = new System.Drawing.Size(46, 41);
             this.label10.TabIndex = 23;
             this.label10.Text = "10";
+            this.label10.Click += new System.EventHandler(this.label10_Click);
             // 
             // guna2Shapes5
             // 

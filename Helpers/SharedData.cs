@@ -8,6 +8,11 @@ namespace book_review.Helpers
     {
         // Property to store the user count
         public static int UserCount { get; private set; }
+        public static int AuthorCount { get; private set; } 
+        public static int BookCount { get; private set; } 
+
+        public static int ReviewCount { get; private set; } 
+
 
         // Method to refresh the user count from the database
         public static void RefreshUserCount()
@@ -29,5 +34,75 @@ namespace book_review.Helpers
                 }
             }
         }
+
+        public static void RefreshAuthorCount() // New Method
+        {
+            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"]?.ConnectionString;
+            if (string.IsNullOrEmpty(connectionString)) return;
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string query = "SELECT COUNT(*) FROM authors";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    AuthorCount = Convert.ToInt32(cmd.ExecuteScalar());
+                }
+                catch (Exception ex)
+                {
+                    // Consider logging this error
+                    MessageBox.Show("An error occurred while refreshing author count: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        public static void RefreshBookCount() // New Method
+        {
+            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"]?.ConnectionString;
+            if (string.IsNullOrEmpty(connectionString)) return;
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string query = "SELECT COUNT(*) FROM books";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    BookCount = Convert.ToInt32(cmd.ExecuteScalar());
+                }
+                catch (Exception ex)
+                {
+                    // Consider logging this error
+                    MessageBox.Show("An error occurred while refreshing book count: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        public static void RefreshReviewCount() // New Method
+        {
+            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"]?.ConnectionString;
+            if (string.IsNullOrEmpty(connectionString)) return;
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string query = "SELECT COUNT(*) FROM reviews";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    ReviewCount = Convert.ToInt32(cmd.ExecuteScalar());
+                }
+                catch (Exception ex)
+                {
+                    // Consider logging this error
+                    MessageBox.Show("An error occurred while refreshing review count: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+
+
+
     }
 }
