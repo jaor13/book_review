@@ -62,3 +62,4 @@ C:\Users\Acer\source\repos\book_review\obj\Debug\book_review.booksUserControl.re
 C:\Users\Acer\source\repos\book_review\obj\Debug\book_review.authorsControl.resources
 C:\Users\Acer\source\repos\book_review\obj\Debug\book_review.genreUserControl.resources
 C:\Users\Acer\source\repos\book_review\obj\Debug\book_review.reviewsUserControl.resources
+C:\Users\Acer\source\repos\book_review\obj\Debug\book_review.csproj.ResolveComReference.cache

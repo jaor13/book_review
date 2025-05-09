@@ -8,7 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
-using book_review.Helpers; 
+using book_review.Helpers;
+using System.IO; 
+using Excel = Microsoft.Office.Interop.Excel; 
+using System.Runtime.InteropServices; 
+
 
 
 
@@ -529,10 +533,6 @@ namespace book_review
                 try
                 {
                     conn.Open();
-                    // Consider using _selectedUserId for deletion if it's reliably set:
-                    // string query = "DELETE FROM users WHERE user_id = @userId";
-                    // MySqlCommand cmd = new MySqlCommand(query, conn);
-                    // cmd.Parameters.AddWithValue("@userId", _selectedUserId.Value); // Assuming _selectedUserId is not null
 
                     string query = "DELETE FROM users WHERE username = @username";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
@@ -574,6 +574,200 @@ namespace book_review
 
 
             }
+        }
+
+
+
+        private void PopulateUserEngagementReportTemplate()
+        {
+            // --- 1. Select the specific Excel Template File ---
+            string templateFilePath = "";
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "Excel Template (user-engagement-report.xlsx)|user-engagement-report.xlsx|All Excel Files (*.xlsx)|*.xlsx";
+                openFileDialog.Title = "Select 'user-engagement-report.xlsx' Template";
+                // Optionally, set an initial directory
+                // openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                if (openFileDialog.ShowDialog() != DialogResult.OK)
+                {
+                    return; // User cancelled
+                }
+                // Basic check for the expected filename, though path can vary
+                if (!Path.GetFileName(openFileDialog.FileName).Equals("user-engagement-report.xlsx", StringComparison.OrdinalIgnoreCase))
+                {
+                    MessageBox.Show("Please select the 'user-engagement-report.xlsx' file.", "Incorrect File", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                templateFilePath = openFileDialog.FileName;
+            }
+
+            // --- 2. Generate Output Filepath with Timestamp ---
+            string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            string suggestedFileName = $"user-engagement-report-{timestamp}.xlsx";
+            string outputFilePath = "";
+
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = "Excel Workbook (*.xlsx)|*.xlsx";
+                saveFileDialog.Title = "Save Populated User Engagement Report";
+                saveFileDialog.FileName = suggestedFileName;
+                if (saveFileDialog.ShowDialog() != DialogResult.OK)
+                {
+                    return; // User cancelled
+                }
+                outputFilePath = saveFileDialog.FileName;
+            }
+
+            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                MessageBox.Show("Connection string 'MySqlConnection' not found.", "Configuration Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            DataTable userEngagementData = new DataTable();
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string query = @"
+                    SELECT
+                        u.username AS UserName,
+                        COUNT(r.review_id) AS NumberOfReviewsSubmitted,
+                        IFNULL(AVG(r.rating), 0) AS AverageRatingGiven
+                    FROM
+                        users u
+                    LEFT JOIN
+                        reviews r ON u.user_id = r.user_id
+                    GROUP BY
+                        u.user_id, u.username
+                    ORDER BY
+                        NumberOfReviewsSubmitted DESC, u.username ASC;";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                    adapter.Fill(userEngagementData);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error fetching user engagement data: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+
+            if (userEngagementData.Rows.Count == 0)
+            {
+                MessageBox.Show("No user engagement data to export.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // --- 4. Populate Excel Template using Interop ---
+            Excel.Application excelApp = null;
+            Excel.Workbook workbook = null;
+            Excel.Worksheet worksheet = null;
+
+            try
+            {
+                excelApp = new Excel.Application();
+                excelApp.DisplayAlerts = false;
+
+                // Create a copy of the template instead of opening it directly
+                File.Copy(templateFilePath, outputFilePath, true);
+                workbook = excelApp.Workbooks.Open(outputFilePath);
+
+                // **Assuming your data sheet is the first one or has a known name**
+                // If you know the sheet name, use it. Otherwise, index 1.
+                string targetSheetName = "Sheet1"; // CHANGE THIS if your template's sheet has a different name
+                try
+                {
+                    worksheet = (Excel.Worksheet)workbook.Sheets[targetSheetName];
+                }
+                catch
+                {
+                    // Fallback to first sheet if named sheet not found
+                    try
+                    {
+                        worksheet = (Excel.Worksheet)workbook.Sheets[1];
+                        MessageBox.Show($"Sheet '{targetSheetName}' not found. Using the first available sheet. Please verify the output.", "Sheet Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    catch
+                    {
+                        MessageBox.Show($"Could not access any worksheet in the template '{Path.GetFileName(templateFilePath)}'.", "Template Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        workbook.Close(false);
+                        excelApp.Quit();
+                        return;
+                    }
+                }
+
+                // Write "Report Generated On" Date
+                worksheet.Cells[3, 2] = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"); // Cell B3
+
+                // Data starting row and columns as per your specification
+                int dataStartRow = 6;
+                int userNameCol = 1;      // Column A
+                int reviewsCountCol = 2;  // Column B
+                int avgRatingCol = 3;     // Column C
+
+                // Write data from DataTable to the worksheet
+                for (int i = 0; i < userEngagementData.Rows.Count; i++)
+                {
+                    worksheet.Cells[dataStartRow + i, userNameCol] = userEngagementData.Rows[i]["UserName"];
+                    worksheet.Cells[dataStartRow + i, reviewsCountCol] = userEngagementData.Rows[i]["NumberOfReviewsSubmitted"];
+                    worksheet.Cells[dataStartRow + i, avgRatingCol] = userEngagementData.Rows[i]["AverageRatingGiven"];
+
+                    // Optional: Format the average rating cell if your template doesn't already do it
+                    ((Excel.Range)worksheet.Cells[dataStartRow + i, avgRatingCol]).NumberFormat = "0.00";
+                }
+
+                workbook.Save();
+                workbook.Close(true);
+                excelApp.Quit();
+
+                MessageBox.Show("User Engagement Report populated and saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error during Excel operation: " + ex.Message, "Excel Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                try
+                {
+                    workbook?.Close(false);
+                    excelApp?.Quit();
+                }
+                catch { /* Ignore cleanup errors */ }
+            }
+            finally
+            {
+                // Properly release COM objects
+                ReleaseComObject(worksheet);
+                ReleaseComObject(workbook);
+                ReleaseComObject(excelApp);
+            }
+        }
+
+        private void ReleaseComObject(object obj)
+        {
+            try
+            {
+                if (obj != null && Marshal.IsComObject(obj))
+                {
+                    Marshal.ReleaseComObject(obj);
+                }
+                obj = null;
+            }
+            catch (Exception)
+            {
+                obj = null;
+            }
+            finally
+            {
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+        }
+
+        private void guna2Button5_Click(object sender, EventArgs e)
+        {
+            PopulateUserEngagementReportTemplate();
         }
     }
 }

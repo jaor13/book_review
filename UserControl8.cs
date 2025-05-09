@@ -53,9 +53,112 @@ namespace book_review
             if (!IsInDesignMode())
             {
                 LoadGenreData();
+                LoadGenresIntoProcedureComboBox(); // For guna2ComboBox1 (for the stored procedure)
+            }
+        }
+        private void LoadGenresIntoProcedureComboBox()
+        {
+            if (IsInDesignMode() || guna2ComboBox1 == null) return;
+            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"]?.ConnectionString;
+            if (string.IsNullOrEmpty(connectionString)) return;
+
+            guna2ComboBox1.Items.Clear();
+            // Add a placeholder item
+            guna2ComboBox1.Items.Add(new reviewsUserControl.ComboboxItem { Text = "-- Select Genre --", Value = DBNull.Value });
+
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string query = "SELECT genre_id, genre_name FROM genres ORDER BY genre_name;";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            guna2ComboBox1.Items.Add(new reviewsUserControl.ComboboxItem { Text = reader["genre_name"].ToString(), Value = reader["genre_id"] });
+                        }
+                    }
+                    if (guna2ComboBox1.Items.Count > 0)
+                    {
+                        guna2ComboBox1.SelectedIndex = 0; // Select the placeholder
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error loading genres into ComboBox: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
+        private void FetchBooksByGenreProcedure(int genreId, int limitCount)
+        {
+            if (IsInDesignMode()) return;
+            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"]?.ConnectionString;
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                MessageBox.Show("Connection string 'MySqlConnection' not found.", "Configuration Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            DataTable dtBooksByGenre = new DataTable();
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand cmd = new MySqlCommand("GetBooksByGenre", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add(new MySqlParameter("genre_id", MySqlDbType.Int32)).Value = genreId;
+                    cmd.Parameters.Add(new MySqlParameter("limit_count", MySqlDbType.Int32)).Value = limitCount;
+                    try
+                    {
+                        conn.Open();
+                        using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                        {
+                            adapter.Fill(dtBooksByGenre);
+                        }
+
+                        if (guna2DataGridView2 != null)
+                        {
+                            guna2DataGridView2.DataSource = null;
+                            guna2DataGridView2.AutoGenerateColumns = false;
+
+                            if (guna2DataGridView2.Columns["procBookIdCol"] == null)
+                            {
+                                guna2DataGridView2.Columns.Add(new DataGridViewTextBoxColumn
+                                {
+                                    Name = "procBookIdCol",
+                                    DataPropertyName = "book_id", // Matches column from procedure's SELECT
+                                    HeaderText = "Book ID"
+                                });
+                            }
+                            if (guna2DataGridView2.Columns["procBookTitleCol"] == null)
+                            {
+                                guna2DataGridView2.Columns.Add(new DataGridViewTextBoxColumn
+                                {
+                                    Name = "procBookTitleCol",
+                                    DataPropertyName = "book_title", 
+                                    HeaderText = "Book Title",
+                                    AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                                });
+                            }
+                            guna2DataGridView2.DataSource = dtBooksByGenre;
+                        }
+                    }
+                    catch (MySqlException ex)
+                    {
+                        MessageBox.Show("Database error calling GetBooksByGenre: " + ex.Message, "DB Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("An error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
         private void LoadGenreData(string searchTerm = null)
         {
             if (IsInDesignMode()) return;
@@ -209,6 +312,7 @@ namespace book_review
 
                     LoadGenreData();
                     ClearInputFields();
+                    LoadGenresIntoProcedureComboBox();
                 }
                 catch (Exception ex)
                 {
@@ -264,6 +368,7 @@ namespace book_review
                     MessageBox.Show("Genre updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LoadGenreData();
                     ClearInputFields();
+                    LoadGenresIntoProcedureComboBox();
                 }
                 catch (Exception ex)
                 {
@@ -328,6 +433,7 @@ namespace book_review
 
                         LoadGenreData();
                         ClearInputFields();
+                        LoadGenresIntoProcedureComboBox();
                     }
                     catch (Exception ex)
                     {
@@ -341,6 +447,65 @@ namespace book_review
         private void guna2TextBox1_TextChanged(object sender, EventArgs e)
         {
             // Genre Name TextBox - No specific validation here on text changed.
+        }
+
+        private void guna2ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void guna2TextBox2_TextChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(guna2TextBox2.Text))
+            {
+                if (!int.TryParse(guna2TextBox2.Text, out _))
+                {
+                    // Optionally provide immediate feedback, e.g., change border color
+                    // guna2TextBox2.BorderColor = Color.Red;
+                }
+                else
+                {
+                    // guna2TextBox2.BorderColor = Color.Silver; // Or your default color
+                }
+            }
+        }
+
+        private void guna2DataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void guna2ButtonFetchBooksByGenreProc_Click(object sender, EventArgs e)
+        {
+            if (IsInDesignMode()) return;
+
+            int selectedGenreIdForProc = 0;
+            if (guna2ComboBox1.SelectedItem is reviewsUserControl.ComboboxItem selectedItem && selectedItem.Value != DBNull.Value)
+            {
+                selectedGenreIdForProc = Convert.ToInt32(selectedItem.Value);
+            }
+            else
+            {
+                MessageBox.Show("Please select a genre from the dropdown.", "Input Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                guna2DataGridView2.DataSource = null; // Clear previous results
+                return;
+            }
+
+            if (int.TryParse(guna2TextBox2.Text, out int limitCount))
+            {
+                if (limitCount <= 0)
+                {
+                    MessageBox.Show("Limit count must be a positive number.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    guna2DataGridView2.DataSource = null; // Clear previous results
+                    return;
+                }
+                FetchBooksByGenreProcedure(selectedGenreIdForProc, limitCount);
+            }
+            else
+            {
+                MessageBox.Show("Please enter a valid number for the limit.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                guna2DataGridView2.DataSource = null; // Clear previous results
+            }
         }
     }
 }

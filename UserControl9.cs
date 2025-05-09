@@ -7,8 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient; // Ensure this is present
-using book_review.Helpers; 
+using MySql.Data.MySqlClient; 
+using book_review.Helpers;
+using System.IO;
+using Excel = Microsoft.Office.Interop.Excel;
+using System.Runtime.InteropServices;
+
 
 namespace book_review
 {
@@ -538,6 +542,204 @@ namespace book_review
                     }
                 }
             }
+        }
+
+
+        private void PopulateReviewsSummaryReportTemplate()
+        {
+            string templateFilePath = "";
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "Excel Template (book-reviews-summary.xlsx)|book-reviews-summary.xlsx|All Excel Files (*.xlsx)|*.xlsx";
+                openFileDialog.Title = "Select 'book-reviews-summary.xlsx' Template";
+               
+                if (openFileDialog.ShowDialog() != DialogResult.OK)
+                {
+                    return; // User cancelled
+                }
+                if (!Path.GetFileName(openFileDialog.FileName).Equals("book-reviews-summary.xlsx", StringComparison.OrdinalIgnoreCase))
+                {
+                    MessageBox.Show("Please select the 'book-reviews-summary.xlsx' file.", "Incorrect File", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                templateFilePath = openFileDialog.FileName;
+            }
+
+            string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            string suggestedFileName = $"book-reviews-summary-{timestamp}.xlsx";
+            string outputFilePath = "";
+
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = "Excel Workbook (*.xlsx)|*.xlsx";
+                saveFileDialog.Title = "Save Populated Reviews Summary Report";
+                saveFileDialog.FileName = suggestedFileName;
+                if (saveFileDialog.ShowDialog() != DialogResult.OK)
+                {
+                    return; // User cancelled
+                }
+                outputFilePath = saveFileDialog.FileName;
+            }
+
+            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                MessageBox.Show("Connection string 'MySqlConnection' not found.", "Configuration Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            DataTable reviewsReportData = new DataTable();
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string query = @"
+                    SELECT 
+                            u.username AS UserName,
+                            b.book_title AS BookTitle,
+                            r.rating AS Rating,
+                            r.review_comment AS ReviewText,
+                            r.created_at AS ReviewDate 
+                        FROM reviews r
+                        JOIN books b ON r.book_id = b.book_id
+                        JOIN users u ON r.user_id = u.user_id
+                        ORDER BY r.created_at DESC;"; 
+
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                    adapter.Fill(reviewsReportData);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error fetching review data: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+
+            if (reviewsReportData.Rows.Count == 0)
+            {
+                MessageBox.Show("No review data to export.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // --- 4. Populate Excel Template using Interop ---
+            Excel.Application excelApp = null;
+            Excel.Workbook workbook = null;
+            Excel.Worksheet worksheet = null;
+
+            try
+            {
+                excelApp = new Excel.Application();
+                excelApp.DisplayAlerts = false;
+
+                File.Copy(templateFilePath, outputFilePath, true);
+                workbook = excelApp.Workbooks.Open(outputFilePath);
+
+                string targetSheetName = "Sheet1"; // CHANGE THIS if your template's sheet has a different name
+                try
+                {
+                    worksheet = (Excel.Worksheet)workbook.Sheets[targetSheetName];
+                }
+                catch
+                {
+                    try
+                    {
+                        worksheet = (Excel.Worksheet)workbook.Sheets[1];
+                        MessageBox.Show($"Sheet '{targetSheetName}' not found. Using the first available sheet. Please verify the output.", "Sheet Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    catch
+                    {
+                        MessageBox.Show($"Could not access any worksheet in the template '{Path.GetFileName(templateFilePath)}'.", "Template Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        workbook.Close(false);
+                        excelApp.Quit();
+                        return;
+                    }
+                }
+
+                worksheet.Cells[3, 2] = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"); // Cell B3
+
+                int dataStartRow = 6;
+                int userNameCol = 1;      // Column A
+                int bookTitleCol = 2;     // Column B
+                int ratingCol = 3;        // Column C
+                int reviewTextCol = 4;    // Column D
+                int reviewDateCol = 5;    // Column E
+
+                  // Write data from DataTable to the worksheet
+                for (int i = 0; i < reviewsReportData.Rows.Count; i++)
+                {
+                    worksheet.Cells[dataStartRow + i, userNameCol] = reviewsReportData.Rows[i]["UserName"];
+                    worksheet.Cells[dataStartRow + i, bookTitleCol] = reviewsReportData.Rows[i]["BookTitle"];
+                    worksheet.Cells[dataStartRow + i, ratingCol] = reviewsReportData.Rows[i]["Rating"];
+                    worksheet.Cells[dataStartRow + i, reviewTextCol] = reviewsReportData.Rows[i]["ReviewText"];
+                    
+                    // Format ReviewDate
+                    if (reviewsReportData.Rows[i]["ReviewDate"] != DBNull.Value)
+                    {
+                        DateTime reviewDate = Convert.ToDateTime(reviewsReportData.Rows[i]["ReviewDate"]);
+                        ((Excel.Range)worksheet.Cells[dataStartRow + i, reviewDateCol]).NumberFormat = "yyyy-mm-dd hh:mm:ss"; // Or "yyyy-mm-dd"
+                        worksheet.Cells[dataStartRow + i, reviewDateCol] = reviewDate;
+                    }
+                    else
+                    {
+                        worksheet.Cells[dataStartRow + i, reviewDateCol] = ""; // Or some placeholder for null dates
+                    }
+                }
+                workbook.Save();
+                workbook.Close(true);
+                excelApp.Quit();
+
+                MessageBox.Show("Reviews Summary Report populated and saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error during Excel operation: " + ex.Message, "Excel Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                try
+                {
+                    workbook?.Close(false);
+                    excelApp?.Quit();
+                }
+                catch { /* Ignore cleanup errors */ }
+            }
+            finally
+            {
+                // Properly release COM objects
+                ReleaseComObject(worksheet);
+                ReleaseComObject(workbook);
+                ReleaseComObject(excelApp);
+            }
+        }
+
+        private void ReleaseComObject(object obj)
+        {
+            try
+            {
+                if (obj != null && Marshal.IsComObject(obj))
+                {
+                    Marshal.ReleaseComObject(obj);
+                }
+                obj = null;
+            }
+            catch (Exception)
+            {
+                obj = null;
+            }
+            finally
+            {
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+        }
+
+        private void guna2Button5_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void guna2Button5_Click_1(object sender, EventArgs e)
+        {
+            PopulateReviewsSummaryReportTemplate();
+
         }
     }
 }
